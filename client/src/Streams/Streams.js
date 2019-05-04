@@ -22,8 +22,19 @@ class Streams extends Component {
         function authenticate() {
             return gapi.auth2.getAuthInstance()
                 .signIn({ scope: "https://www.googleapis.com/auth/youtube.force-ssl" })
-                .then(function () { console.log("Sign-in successful"); },
+                .then(function () {
+                    gapi.load('client', loadClient)
+                    console.log("Sign-in successful");
+                },
                     function (err) { console.error("Error signing in", err); });
+        }
+        function loadClient() {
+            return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
+                .then(function () {
+                    gapi.load('client', execute);
+                    console.log("GAPI client loaded for API");
+                },
+                    function (err) { console.error("Error loading GAPI client for API", err); });
         }
     }
 
