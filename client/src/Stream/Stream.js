@@ -56,8 +56,11 @@ class Stream extends Component {
     }
 
     render() {
-        const { stream } = this.state;
-        if (stream === null) return <p>Loading ...</p>;
+        console.log("Current State: ", this.state)
+        const { id, name, messages } = this.state;
+        const live = "https://www.youtube.com/embed/" + id
+
+
         return (
             <div className="container">
                 <div className="row">
