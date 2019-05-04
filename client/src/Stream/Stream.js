@@ -65,11 +65,14 @@ class Stream extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="jumbotron col-12">
-                        <h1 className="display-3">{stream.title}</h1>
-                        <p className="lead">{stream.description}</p>
+                    <div className="jumbotron col-6">
+                        <h1 className="display-3">{name}</h1>
                         <hr className="my-4" />
-                        <p>Answers:</p>
+                        <iframe width="560" height="315" src={live} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                    </div>
+                    <div className="jumbotron col-6">
+                        <h1 className="display-3">Chat</h1>
+                        <hr className="my-4" />
                         {
                             stream.answers.map((answer, idx) => (
                                 <p className="lead" key={idx}>{answer.answer}</p>
