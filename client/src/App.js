@@ -13,8 +13,8 @@ class App extends Component {
       <div>
         <NavBar />
         <Route path='/' component={Home} />
-        <SecuredRoute path='/videos' component={Streams} />
-        <SecuredRoute path='/video/:videoId' component={Stream} />
+        <Route exact path='/videos' component={Streams} />
+        <Route path='/video/:id' component={Stream} />
         <Route exact path='/callback' component={Callback} />
       </div>
     );
