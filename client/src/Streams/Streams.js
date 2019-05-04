@@ -63,21 +63,24 @@ class Streams extends Component {
             <div className="container">
                 <div className="row">
                     {this.state.streams === null && <p>Loading streams...</p>}
-                    {/* {
-                        this.state.streams && this.state.streams.map(question => (
-                            <div key={question.id} className="col-sm-12 col-md-4 col-lg-3">
-                                <Link to={`/question/${question.id}`}>
+                    {
+                        this.state.streams && this.state.streams.map(stream => (
+                            <div key={stream.id.videoId} className="col-sm-12 col-md-4 col-lg-3">
+                                {/* <Link to={`/stream/${stream.id}`}> */}
                                     <div className="card text-white bg-success mb-3">
-                                        <div className="card-header">Answers: {question.answers}</div>
+                                    <div className="card-header"></div>
                                         <div className="card-body">
-                                            <h4 className="card-title">{question.title}</h4>
-                                            <p className="card-text">{question.description}</p>
+                                        <h4 className="card-title">{stream.snippet.channelTitle}</h4>
+                                        <img src={stream.snippet.thumbnails.default.url} />
+                                        <button type="button" className="btn btn-primary" onClick={event => this.viewStream(stream.id.videoId, stream.snippet.channelTitle, event)}
+                                            type="submit">Watch</button>
+                                        <p className="card-text"></p>
                                         </div>
                                     </div>
-                                </Link>
+                                {/* </Link> */}
                             </div>
                         ))
-                    } */}
+                    }
                 </div>
             </div>
         )
