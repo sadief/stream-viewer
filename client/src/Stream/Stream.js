@@ -7,7 +7,10 @@ class Stream extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            stream: null,
+            id: props.location.state.key,
+            name: props.location.state.name,
+            chatId: null,
+            messages: null,
         };
     }
 
