@@ -1,6 +1,9 @@
+/* global gapi */
 import React, { Component } from 'react';
 
+
 class Stream extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
