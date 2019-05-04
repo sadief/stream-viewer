@@ -37,6 +37,21 @@ class Stream extends Component {
                 },
                     function (err) { console.error("Execute error", err); });
         }
+        var getChat = () => {
+            return gapi.client.youtube.liveChatMessages.list({
+                "liveChatId": this.state.chatId,
+                "part": "snippet,authorDetails",
+            })
+                .then((response) => {
+                    // Handle the results here (response.result has the parsed body).
+                    console.log("Response", response);
+                    this.setState({ messages: response.result.items })
+                },
+                    function (err) { console.error("Execute error", err); });
+        }
+        gapi.load("client:auth2", function () {
+            gapi.auth2.init({ client_id: process.env.REACT_APP_YOUTUBE_CLIENT_ID });
+        });
     render() {
         const { stream } = this.state;
         if (stream === null) return <p>Loading ...</p>;
