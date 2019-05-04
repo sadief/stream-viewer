@@ -15,11 +15,13 @@ class Stream extends Component {
     }
 
     async componentDidMount() {
-        // const { match: { params } } = this.props;
-        // const stream = (await axios.get(`http://localhost:8081/${params.streamId}`)).data;
-        // this.setState({
-        //     stream,
-        // });
+        function loadClient() {
+            return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
+                .then(function () {
+                    gapi.load('client', execute);
+                    console.log("GAPI client loaded for API");
+                },
+                    function (err) { console.error("Error loading GAPI client for API", err); });
     }
 
     render() {
