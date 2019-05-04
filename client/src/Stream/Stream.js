@@ -52,6 +52,9 @@ class Stream extends Component {
         gapi.load("client:auth2", function () {
             gapi.auth2.init({ client_id: process.env.REACT_APP_YOUTUBE_CLIENT_ID });
         });
+        gapi.load('client', loadClient)
+    }
+
     render() {
         const { stream } = this.state;
         if (stream === null) return <p>Loading ...</p>;
