@@ -61,6 +61,7 @@ class Stream extends Component {
         const live = "https://www.youtube.com/embed/" + id
 
 
+        if (id === null) return <p>Loading ...</p>;
         return (
             <div className="container">
                 <div className="row">
