@@ -24,6 +24,19 @@ class Stream extends Component {
                     function (err) { console.error("Error loading GAPI client for API", err); });
     }
 
+        var execute = () => {
+            return gapi.client.youtube.videos.list({
+                "part": "snippet, liveStreamingDetails",
+                "id": this.state.id
+            })
+                .then((response) => {
+                    // Handle the results here (response.result has the parsed body).
+                    // console.log("Response", response);
+                    this.setState({ chatId: response.result.items[0].liveStreamingDetails.activeLiveChatId })
+                    gapi.load('client', getChat)
+                },
+                    function (err) { console.error("Execute error", err); });
+        }
     render() {
         const { stream } = this.state;
         if (stream === null) return <p>Loading ...</p>;
