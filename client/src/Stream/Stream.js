@@ -22,7 +22,7 @@ class Stream extends Component {
                     console.log("GAPI client loaded for API");
                 },
                     function (err) { console.error("Error loading GAPI client for API", err); });
-    }
+        }
 
         var execute = () => {
             return gapi.client.youtube.videos.list({
@@ -73,14 +73,34 @@ class Stream extends Component {
                     <div className="jumbotron col-6">
                         <h1 className="display-3">Chat</h1>
                         <hr className="my-4" />
+
+                        {messages === null && <p>Loading messages...</p>}
+                        <div className="d-flex">
+                            <input class="form-control" type="text" placeholder="Chat Away!"></input>
+                            <button class="btn btn-secondary" type="submit">Send</button>
+                        </div>
                         {
-                            stream.answers.map((answer, idx) => (
-                                <p className="lead" key={idx}>{answer.answer}</p>
+                            messages && messages.slice(0, 5).map(message => (
+                                <div key={message.id} >
+                                    <div className="card text-white bg-success mb-3">
+
+                                        <div className="card-header d-flex justify-content-between">
+                                            {message.authorDetails.displayName}
+                                            <p>{message.snippet.publishedAt}</p>
+                                        </div>
+                                        <div className="card-body">
+                                            <p className="card-text">{message.snippet.displayMessage}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
                             ))
                         }
+                        <hr className="my-4" />
                     </div>
                 </div>
-            </div>
+
+            </div >
         )
     }
 }
