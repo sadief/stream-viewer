@@ -36,6 +36,20 @@ class Streams extends Component {
                 },
                     function (err) { console.error("Error loading GAPI client for API", err); });
         }
+        var execute = () => {
+            return gapi.client.youtube.search.list({
+                "part": "snippet,id",
+                "eventType": "live",
+                "maxResults": 10,
+                "type": "video"
+            })
+                .then((response) => {
+                    // Handle the results here (response.result has the parsed body).
+                    this.setState({ streams: response.result.items })
+                    console.log("Response", response);
+                },
+                    function (err) { console.error("Execute error", err); });
+        }
     }
 
     render() {
