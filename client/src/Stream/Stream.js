@@ -130,21 +130,18 @@ class Stream extends Component {
                         <hr className="my-4" />
 
                         {messages === null && <p>Loading messages...</p>}
-                        <div className="d-flex">
-                            <input class="form-control" type="text" placeholder="Chat Away!"></input>
-                            <button class="btn btn-secondary" type="submit">Send</button>
-                        </div>
+
                         {
-                            messages && messages.slice(0, 5).map(message => (
+                            messages && messages.slice(Math.max(messages.length - 5, 1)).map(message => (
                                 <div key={message.id} >
                                     <div className="card text-white bg-success mb-3">
 
-                                        <div className="card-header d-flex justify-content-between">
+                                        <div className="card-header d-flex justify-content-between py-0 px-2">
                                             {message.authorDetails.displayName}
                                             <p>{message.snippet.publishedAt}</p>
                                         </div>
-                                        <div className="card-body">
-                                            <p className="card-text">{message.snippet.displayMessage}</p>
+                                        <div className="card-body py-0 px-2">
+                                            <p className="card-text py-0 px-2">{message.snippet.displayMessage}</p>
                                         </div>
                                     </div>
 
