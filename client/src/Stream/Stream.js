@@ -149,6 +149,12 @@ class Stream extends Component {
                             ))
                         }
                         <hr className="my-4" />
+                        <div className="d-flex">
+                            <input onChange={event =>
+                                this.setState(byPropKey("newMessage", event.target.value))
+                            } className="form-control" type="text" placeholder="Chat Away!"></input>
+                            <button className="btn btn-secondary" type="submit" onClick={event => this.sendMessage(event)}>Send</button>
+                        </div>
                     </div>
                 </div>
 
