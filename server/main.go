@@ -19,3 +19,11 @@ type Message struct {
 	DisplayMessage string `json:"displayMessage,omitempty"`
 	Published      time.Time `json:"published,omitempty"`
 }
+
+// NewMessage ...
+type NewMessage struct {
+	ChannelID string `db:"channel-name"`
+	DisplayName    string `db:"display_name"`
+	DisplayMessage string `db:"display_message"`
+	Published      time.Time `db:"published"`
+}
