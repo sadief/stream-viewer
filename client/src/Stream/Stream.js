@@ -40,7 +40,31 @@ class Stream extends Component {
                 console.log(error);
             });
     };
+
+    sendMessage = (event) => {
+        event.preventDefault();
+
+        return gapi.client.youtube.liveChatMessages.insert({
+            "part": "snippet",
+            "resource": {
+                "snippet": {
+                    "liveChatId": "Cg0KC2hIVzFvWTI2a3hR",
+                    "type": "textMessageEvent",
+                    "textMessageDetails": {
+                        "messageText": this.state.messages
+                    }
+                }
+            }
+        })
+            .then(function (response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response);
+            },
+                function (err) { console.error("Execute error", err); });
+    }
+
     async componentDidMount() {
+
         function loadClient() {
             return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
                 .then(function () {
