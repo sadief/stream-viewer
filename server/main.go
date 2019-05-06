@@ -28,6 +28,43 @@ type NewMessage struct {
 	Published      time.Time `db:"published"`
 }
 
+func main() {
+	http.HandleFunc("/messages", func(w http.ResponseWriter, r *http.Request) {
+		setupResponse(&w, r)
+		if (*r).Method == "OPTIONS" {
+			return
+		}
+
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			panic(err)
+		}
+
+		log.Printf(string(body))
+
+		var m Messages
+		err = json.Unmarshal(body, &m)
+		if err != nil {
+			panic(err)
+		}
+
+		for key, value := range m.Messages {
+			var newMsg = NewMessage{
+				ChannelID: key,
+				DisplayMessage: value.DisplayMessage,
+				DisplayName: value.DisplayName,
+				Published: value.Published,
+			}
+		log.Printf("NewMessage: %v", newMsg)
+	}
+
+		// log.Printf("Messages: %#v", m.Messages)
+	})
+
+	log.Printf("Listening on port 3030")
+	http.ListenAndServe(":3030", nil)
+
+}
 
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
