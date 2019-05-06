@@ -96,8 +96,13 @@ class Stream extends Component {
                     // Handle the results here (response.result has the parsed body).
                     console.log("Response", response);
                     this.setState({ messages: response.result.items })
+                    // gapi.load('client', getChat)
+                    this.storeMessage()
                 },
-                    function (err) { console.error("Execute error", err); });
+                    function (err) {
+                        console.error("Execute error", err);
+                        // gapi.load('client', getChat)
+                    });
         }
         gapi.load("client:auth2", function () {
             gapi.auth2.init({ client_id: process.env.REACT_APP_YOUTUBE_CLIENT_ID });
