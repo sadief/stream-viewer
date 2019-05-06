@@ -1,5 +1,6 @@
 /* global gapi */
 import React, { Component } from 'react';
+import axios from 'axios';
 
 
 class Stream extends Component {
