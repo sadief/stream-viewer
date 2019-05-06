@@ -19,6 +19,27 @@ class Stream extends Component {
         };
     }
 
+    storeMessage = () => {
+        var msgs = {}
+        var msg = {}
+        for (var i = 0; i < this.state.messages.length; i++) {
+            msg["displayName"] = this.state.messages[i].authorDetails.displayName;
+            msg["displayMessage"] = this.state.messages[i].snippet.displayMessage;
+            msg["published"] = this.state.messages[i].snippet.publishedAt;
+            msgs[this.state.messages[i].authorDetails.channelId] = msg
+            msg = {}
+        }
+        console.log(msgs)
+        axios.post('http://localhost:3030/messages', {
+            messages: msgs,
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
     async componentDidMount() {
         function loadClient() {
             return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
