@@ -12,6 +12,7 @@ class Stream extends Component {
             name: props.location.state.name,
             chatId: null,
             messages: null,
+            newMessage: ""
         };
     }
 
