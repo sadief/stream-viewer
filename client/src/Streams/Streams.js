@@ -15,7 +15,7 @@ class Streams extends Component {
     viewStream = (id, name, event) => {
         event.preventDefault();
         const { history } = this.props;
-        history.push({ pathname: '/video/:id', state: { key: id, name: name } });
+        history.push({ pathname: `/video/${id}`, state: { key: id, name: name } });
     };
 
     async componentDidMount() {
