@@ -20,21 +20,22 @@ class Stream extends Component {
     }
 
     storeMessage = () => {
+        console.log(this.state.messages.length)
         var msgs = {}
         var msg = {}
         for (var i = 0; i < this.state.messages.length; i++) {
-            msg["displayName"] = this.state.messages[i].authorDetails.displayName;
-            msg["displayMessage"] = this.state.messages[i].snippet.displayMessage;
-            msg["published"] = this.state.messages[i].snippet.publishedAt;
-            msgs[this.state.messages[i].authorDetails.channelId] = msg
+            msg["displayName"] = this.state.messages[i].authorDetails.displayName + "";
+            msg["displayMessage"] = this.state.messages[i].snippet.displayMessage + "";
+            msg["published"] = this.state.messages[i].snippet.publishedAt + "";
+            msg["chatID"] = this.state.chatId
+            msgs[this.state.messages[i].id] = msg
             msg = {}
         }
-        console.log(msgs)
+
         axios.post('http://localhost:3030/messages', {
             messages: msgs,
         })
             .then(function (response) {
-                console.log(response);
             })
             .catch(function (error) {
                 console.log(error);
@@ -51,14 +52,12 @@ class Stream extends Component {
                     "liveChatId": "Cg0KC2hIVzFvWTI2a3hR",
                     "type": "textMessageEvent",
                     "textMessageDetails": {
-                        "messageText": this.state.messages
+                        "messageText": this.state.newMessage
                     }
                 }
             }
         })
             .then(function (response) {
-                // Handle the results here (response.result has the parsed body).
-                console.log("Response", response);
             },
                 function (err) { console.error("Execute error", err); });
     }
@@ -80,8 +79,6 @@ class Stream extends Component {
                 "id": this.state.id
             })
                 .then((response) => {
-                    // Handle the results here (response.result has the parsed body).
-                    // console.log("Response", response);
                     this.setState({ chatId: response.result.items[0].liveStreamingDetails.activeLiveChatId })
                     gapi.load('client', getChat)
                 },
@@ -93,15 +90,13 @@ class Stream extends Component {
                 "part": "snippet,authorDetails",
             })
                 .then((response) => {
-                    // Handle the results here (response.result has the parsed body).
-                    console.log("Response", response);
                     this.setState({ messages: response.result.items })
-                    // gapi.load('client', getChat)
+                    gapi.load('client', getChat)
                     this.storeMessage()
                 },
                     function (err) {
                         console.error("Execute error", err);
-                        // gapi.load('client', getChat)
+                        gapi.load('client', getChat)
                     });
         }
         gapi.load("client:auth2", function () {
@@ -111,7 +106,7 @@ class Stream extends Component {
     }
 
     render() {
-        console.log("Current State: ", this.state)
+        // console.log("Current State: ", this.state)
         const { id, name, messages } = this.state;
         const live = "https://www.youtube.com/embed/" + id
 
@@ -123,7 +118,7 @@ class Stream extends Component {
                     <div className="jumbotron col-6">
                         <h1 className="display-3">{name}</h1>
                         <hr className="my-4" />
-                        <iframe width="560" height="315" src={live} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                        <iframe title={name} width="560" height="315" src={live} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                     </div>
                     <div className="jumbotron col-6">
                         <h1 className="display-3">Chat</h1>

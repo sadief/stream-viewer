@@ -1,7 +1,8 @@
 /* global gapi */
 
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import auth0Client from '../Auth.js'
+
 
 class Streams extends Component {
     constructor(props) {
@@ -19,15 +20,6 @@ class Streams extends Component {
     };
 
     async componentDidMount() {
-        function authenticate() {
-            return gapi.auth2.getAuthInstance()
-                .signIn({ scope: "https://www.googleapis.com/auth/youtube.force-ssl" })
-                .then(function () {
-                    gapi.load('client', loadClient)
-                    console.log("Sign-in successful");
-                },
-                    function (err) { console.error("Error signing in", err); });
-        }
         function loadClient() {
             return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
                 .then(function () {
@@ -40,7 +32,7 @@ class Streams extends Component {
             return gapi.client.youtube.search.list({
                 "part": "snippet,id",
                 "eventType": "live",
-                "maxResults": 10,
+                "maxResults": 12,
                 "type": "video"
             })
                 .then((response) => {
@@ -54,34 +46,37 @@ class Streams extends Component {
             gapi.auth2.init({ client_id: process.env.REACT_APP_YOUTUBE_CLIENT_ID });
         });
 
-        gapi.load('client', authenticate);
+        gapi.load('client', loadClient);
 
     }
 
     render() {
         return (
             <div className="container">
-                <div className="row">
-                    {this.state.streams === null && <p>Loading streams...</p>}
-                    {
-                        this.state.streams && this.state.streams.map(stream => (
-                            <div key={stream.id.videoId} className="col-sm-12 col-md-4 col-lg-3">
-                                {/* <Link to={`/stream/${stream.id}`}> */}
-                                <div className="card text-white bg-success mb-3">
-                                    <div className="card-header"></div>
-                                    <div className="card-body">
-                                        <h4 className="card-title">{stream.snippet.channelTitle}</h4>
-                                        <img src={stream.snippet.thumbnails.default.url} />
-                                        <button type="button" className="btn btn-primary" onClick={event => this.viewStream(stream.id.videoId, stream.snippet.channelTitle, event)}
-                                            type="submit">Watch</button>
-                                        <p className="card-text"></p>
+                {auth0Client.isAuthenticated() ? (
+                    <div>
+                        <h2>Current top Youtube Live Streams</h2>
+                        <div className="row">
+                            {this.state.streams === null && <p>Loading streams...</p>}
+                            {
+                                this.state.streams && this.state.streams.map(stream => (
+                                    <div key={stream.id.videoId} className="col-sm-12 col-md-4 col-lg-3">
+                                        {/* <Link to={`/stream/${stream.id}`}> */}
+                                        <div className="card text-white bg-success mb-3">
+                                            <div className="card-header"> <h5 className="card-title">{stream.snippet.channelTitle}</h5></div>
+                                            <div className="card-body d-flex flex-column">
+                                                <img alt="video thumbnail url" src={stream.snippet.thumbnails.default.url} />
+                                                <button className="btn btn-primary m-2" onClick={event => this.viewStream(stream.id.videoId, stream.snippet.channelTitle, event)}
+                                                    type="submit">Watch</button>
+                                                <p className="card-text"></p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                {/* </Link> */}
-                            </div>
-                        ))
-                    }
-                </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                ) : (<h2>Please sign in to access Youtube Live Streaming Videos</h2>)}
             </div>
         )
     }
