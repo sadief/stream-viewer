@@ -5,6 +5,10 @@
 #
 # required = ["github.com/user/thing/cmd/thing"]
 # ignored = ["github.com/user/project/pkgX", "bitbucket.org/user/project/pkgA/pkgY"]
+# [metadata.heroku]
+#  root-package = "github.com/sadief/stream-viewer"
+#  go-version = "1.12.4"
+#  ensure="true"
 #
 # [[constraint]]
 #   name = "github.com/user/project"
