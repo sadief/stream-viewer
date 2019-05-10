@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -35,9 +36,9 @@ type NewMessage struct {
 }
 
 const (
-	DB_USER     = "chats"
-	DB_PASSWORD = "chats"
-	DB_NAME     = "streamchat"
+	DB_USER     = "ntcsghcnogrqug"
+	DB_PASSWORD = "a789ee38d86cefbb9a14f1d3f8f283ef1401efd9f23823d3c583c071ae6361d7"
+	DB_NAME     = "d95989onu495rr"
 )
 
 func main() {
@@ -71,11 +72,7 @@ func main() {
 
 			log.Printf("NewMessage: %v", newMsg)
 
-			dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable host=localhost port=5432",
-				DB_USER, DB_PASSWORD, DB_NAME)
-			log.Printf("DB: %v", dbinfo)
-
-			db, err := sql.Open("postgres", dbinfo)
+			db, err := sql.Open("postgres", os.Getenv("postgres://ntcsghcnogrqug:a789ee38d86cefbb9a14f1d3f8f283ef1401efd9f23823d3c583c071ae6361d7@ec2-54-235-167-210.compute-1.amazonaws.com:5432/d95989onu495rr"))
 			if err != nil {
 				fmt.Errorf("Error opening db: %v", err)
 			}
@@ -92,8 +89,13 @@ func main() {
 
 	})
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = ":3030"
+	}
+
 	log.Printf("Listening on port 3030")
-	http.ListenAndServe(":3030", nil)
+	http.ListenAndServe(port, nil)
 
 }
 
