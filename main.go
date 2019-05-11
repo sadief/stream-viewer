@@ -50,7 +50,7 @@ func main() {
 
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
-			panic(err)
+			log.Printf("Error Reading input: %v", err)
 		}
 
 		log.Printf(string(body))
@@ -58,7 +58,7 @@ func main() {
 		var m Messages
 		err = json.Unmarshal(body, &m)
 		if err != nil {
-			panic(err)
+			log.Printf("Error unmarshalling: %v", err)
 		}
 
 		for key, value := range m.Messages {
@@ -74,7 +74,7 @@ func main() {
 
 			db, err := sql.Open("postgres", os.Getenv("postgres://ntcsghcnogrqug:a789ee38d86cefbb9a14f1d3f8f283ef1401efd9f23823d3c583c071ae6361d7@ec2-54-235-167-210.compute-1.amazonaws.com:5432/d95989onu495rr"))
 			if err != nil {
-				fmt.Errorf("Error opening db: %v", err)
+				log.Printf("Error opening db: %v", err)
 			}
 			defer db.Close()
 
@@ -94,7 +94,7 @@ func main() {
 		port = ":3030"
 	}
 
-	log.Printf("Listening on port 3030")
+	log.Printf("Listening on port %v", port)
 	http.ListenAndServe(port, nil)
 
 }
