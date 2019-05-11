@@ -60,8 +60,10 @@ func main() {
 		if err != nil {
 			log.Printf("Error unmarshalling: %v", err)
 		}
+		log.Printf("Messages: %v", m)
 
 		for key, value := range m.Messages {
+			log.Printf("key: %v", key)
 			var newMsg = NewMessage{
 				ID:             key,
 				ChatID:         value.ChatID,
@@ -76,10 +78,12 @@ func main() {
 			if err != nil {
 				log.Printf("Error opening db: %v", err)
 			}
+			log.Printf("Connected to the database!")
 			defer db.Close()
 
 			fmt.Println("# Inserting values")
 			var lastInsertId string
+			fmt.Printf("insert into messages (id, chat_id, display_name, display_message, published) values ('%v','%v','%v','%v','%v') on conflict do nothing returning chat_id;", newMsg.ID, newMsg.ChatID, newMsg.DisplayName, newMsg.DisplayMessage, newMsg.Published)
 			err = db.QueryRow("insert into messages (id, chat_id, display_name, display_message, published) values ($1,$2,$3,$4,$5) on conflict do nothing returning chat_id;", newMsg.ID, newMsg.ChatID, newMsg.DisplayName, newMsg.DisplayMessage, newMsg.Published).Scan(&lastInsertId)
 			if err != nil {
 				fmt.Errorf("Error inserting into db: %v", err)
